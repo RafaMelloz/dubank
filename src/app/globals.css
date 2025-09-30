@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+@custom-variant liquid (&:is(.liquid *));
+@custom-variant solid (&:is(.solid *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply 
+      h-dvh w-full
+      bg-gradient-to-r 
+        from-cyan-100 via-cyan-200 to-cyan-300
+        dark:from-sky-700 dark:via-sky-800 dark:to-sky-900 duration-100;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+
+  /* =========================================
+     Navbar
+  ========================================= */
+  .navbar {
+    @apply 
+      w-full max-w-md m-auto
+      flex justify-around items-center gap-6 px-6 py-3 rounded-2xl
+      bg-white/10 backdrop-blur-2xl border border-white/20
+      dark:bg-gray-900/10 dark:border-gray-700/40;
+
+    /* Brilho interno */
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.4),
+      0 4px 30px rgba(0,0,0,0.1);
+  }
+
+  /* Ícones da Navbar */
+  .nav-icon {
+    @apply 
+      flex items-center justify-center w-10 h-10 rounded-xl
+      text-gray-800 dark:text-gray-200
+      transition-transform duration-200 ease-in-out;
+  }
+
+  .nav-icon:hover {
+    @apply 
+      bg-white/20 dark:bg-gray-700/30
+      scale-110 text-cyan-400;
+  }
+
+  .nav-icon.active {
+    @apply 
+      text-cyan-500 bg-white/30 dark:bg-gray-700/40;
+  }
+
+  /* =========================================
+     Card
+  ========================================= */
+  .card {
+    @apply 
+      bg-white/10 backdrop-blur-2xl border border-white/20
+      dark:bg-gray-900/10 dark:border-gray-700/40
+      rounded-2xl p-4 shadow-none transition-transform duration-200;
+
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.4),
+      0 4px 30px rgba(0,0,0,0.1);
+  }
+
+
+
+  /* =========================================
+     Botões
+  ========================================= */
+  .btn {
+    @apply 
+      inline-flex items-center justify-center gap-2
+      px-4 py-2 rounded-xl font-medium
+      text-gray-800 dark:text-gray-100
+      bg-white/10 backdrop-blur-2xl border border-white/20
+      dark:bg-gray-900/10 dark:border-gray-700/40
+      transition-transform duration-200 ease-in-out;
+
+    /* Mesmo brilho interno da navbar */
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.4),
+      0 4px 30px rgba(0,0,0,0.1);
+  }
+
+  /* Hover dos botões */
+  .btn:hover {
+    @apply bg-white/20 dark:bg-gray-700/30 text-cyan-500 scale-105;
+  }
+
+  /* Botão estado ativo */
+  .btn:active {
+    @apply scale-95;
+  }
 }
