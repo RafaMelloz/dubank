@@ -1,6 +1,6 @@
 import { ToggleDarkMode } from "@/shared/components/toggle-dark-mode";
 import { ToggleLayoutMode } from "@/shared/components/toggle-layout-mode";
-import { LogOut } from "lucide-react";
+import { BtnLogout } from "./components/btn-logout";
 
 export default function AccountPage() {
   return (
@@ -13,7 +13,7 @@ export default function AccountPage() {
               rafaelmeloalvessouza@gmail.com
             </p>
           </div>
-          <button className="btn"><LogOut /></button>
+          <BtnLogout />
         </div>
 
         <div className="flex gap-2 mt-4">

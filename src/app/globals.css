@@ -50,7 +50,6 @@
     @apply 
       text-cyan-500 bg-white/30 dark:bg-gray-700/40;
   }
-
   /* =========================================
      Card
   ========================================= */
@@ -64,9 +63,6 @@
       inset 0 1px 1px rgba(255,255,255,0.4),
       0 4px 30px rgba(0,0,0,0.1);
   }
-
-
-
   /* =========================================
      Botões
   ========================================= */
@@ -93,5 +89,56 @@
   /* Botão estado ativo */
   .btn:active {
     @apply scale-95;
+  }
+
+  /* =========================================
+     Input
+  ========================================= */
+  .input {
+    @apply 
+      w-full px-4 py-2 rounded-xl
+      text-gray-800 dark:text-gray-100
+      bg-white/10 backdrop-blur-2xl border border-white/20
+      dark:bg-gray-900/10 dark:border-gray-700/40
+      placeholder:text-gray-500 dark:placeholder:text-gray-400
+      transition-all duration-200 ease-in-out
+      outline-none;
+
+    /* Mesmo brilho interno dos outros componentes */
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.4),
+      0 4px 30px rgba(0,0,0,0.1);
+  }
+
+  /* Focus do input */
+  .input:focus {
+    @apply 
+      border-cyan-400/50 dark:border-cyan-500/50
+      bg-white/20 dark:bg-gray-700/20;
+    
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.4),
+      0 0 0 3px rgba(6,182,212,0.1),
+      0 4px 30px rgba(0,0,0,0.1);
+  }
+
+  /* Input com erro */
+  .input-error {
+    @apply 
+      border-red-400/50 dark:border-red-500/50;
+  }
+
+  .input-error:focus {
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.4),
+      0 0 0 3px rgba(239,68,68,0.1),
+      0 4px 30px rgba(0,0,0,0.1);
+  }
+
+  /* Input desabilitado */
+  .input:disabled {
+    @apply 
+      opacity-50 cursor-not-allowed
+      bg-white/5 dark:bg-gray-900/5;
   }
 }

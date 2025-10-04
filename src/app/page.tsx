@@ -23,6 +23,7 @@ export default function Home() {
   });
 
   async function onSubmit(data: LoginSchema | SignupSchema) {
+
     if (typeForm === "login") {
       try {
         await signIn.email({
@@ -33,7 +34,9 @@ export default function Home() {
       } catch (error) {
         console.error("Erro no login:", error);
       }
-    } else {
+    } 
+    
+    if (typeForm === "signup") {
       const signupData = data as SignupSchema;
       try {
         await signUp.email({
@@ -59,7 +62,7 @@ export default function Home() {
                 Entrar
               </h2>
 
-              <button className="btn" onClick={() => setTypeForm("signup")}>
+              <button className="btn" type="button" onClick={() => setTypeForm("signup")}>
                 <UserRoundPlus />
               </button>
             </div>
@@ -75,8 +78,7 @@ export default function Home() {
                   type="email"
                   id="email"
                   {...register("email")}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="input"
                   placeholder="seu@email.com"
                 />
               </div>
@@ -91,8 +93,7 @@ export default function Home() {
                   type="password"
                   id="password"
                   {...register("password")}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="input"
                   placeholder="••••••••"
                 />
               </div>
@@ -111,7 +112,7 @@ export default function Home() {
                 Criar conta
               </h2>
 
-              <button className="btn" onClick={() => setTypeForm("login")}>
+              <button className="btn" type="button" onClick={() => setTypeForm("login")}>
                 <LogIn />
               </button>
             </div>
@@ -126,9 +127,8 @@ export default function Home() {
                 <input
                   type="text"
                   id="name"
-                  required
                   {...register("name")}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="input"
                   placeholder="Seu nome"
                 />
               </div>
@@ -142,9 +142,8 @@ export default function Home() {
                 <input
                   type="email"
                   id="email"
-                  required
                   {...register("email")}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="input"
                   placeholder="seu@email.com"
                 />
               </div>
@@ -158,10 +157,9 @@ export default function Home() {
                 <input
                   type="password"
                   id="password"
-                  required
                   minLength={8}
                   {...register("password")}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="input"
                   placeholder="••••••••"
                 />
               </div>
@@ -189,7 +187,7 @@ export default function Home() {
       id="login-email"
       name="email"
       required
-      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+      className="input"
       placeholder="seu@email.com"
     />
   </div>
@@ -205,7 +203,7 @@ export default function Home() {
       id="login-password"
       name="password"
       required
-      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+      className="input"
       placeholder="••••••••"
     />
   </div>
