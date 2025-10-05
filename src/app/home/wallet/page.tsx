@@ -1,12 +1,10 @@
 import { PrismaClient } from "@/generated/prisma";
 import { auth } from "@/shared/libs/better-auth/auth";
 import { headers } from "next/headers";
-import { useRouter } from "next/navigation";
 
 const prisma = new PrismaClient();
 
 export default async function WalletPage() {
-  const router = useRouter();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
