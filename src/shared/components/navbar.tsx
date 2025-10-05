@@ -11,16 +11,24 @@ export function Navbar() {
     const currentRoute = pathname.split("/").pop() as NavbarRoute;
 
     return (
-        <nav className="navbar">
-            <Link href="/home/wallet" className={`${currentRoute === "wallet" ? "active" : ""} nav-icon`}>
-                <Wallet />
-            </Link>
-            <Link href="/home/management" className={`${currentRoute === "management" ? "active" : ""} nav-icon`}>
-                <Plus />
-            </Link>
-            <Link href="/home/account" className={`${currentRoute === "account" ? "active" : ""} nav-icon`}>
-                <CircleUser />
-            </Link>
+        <nav className="px-4">
+            <ul className="navbar">
+                <li>
+                    <Link href="/home/wallet" className={`${currentRoute === "wallet" ? "active" : ""} nav-icon`}>
+                        <Wallet />
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/home/management" className={`${currentRoute === "management" ? "active" : ""} nav-icon`}>
+                        <Plus />
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/home/account" className={`${currentRoute === "account" ? "active" : ""} nav-icon`}>
+                        <CircleUser />
+                    </Link>
+                </li>
+            </ul>
         </nav>
     );
 }
