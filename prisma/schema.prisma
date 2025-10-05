@@ -25,6 +25,9 @@ model user {
   updatedAt     DateTime
   accounts      account[]
   sessions      session[]
+  balance       balance?
+  income        income[]
+  expense       expense[]
 }
 
 model session {
@@ -67,4 +70,39 @@ model verification {
   updatedAt  DateTime?
 
   @@unique([identifier, value])
+}
+
+model balance {
+  id        String   @id @default(uuid())
+  value     Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model income {
+  id          String   @id @default(uuid())
+  value       Float    @default(0)
+  description String
+  date        DateTime
+  extra       Boolean  @default(false)
+  userId      String
+  user        user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model expense {
+  id          String   @id @default(uuid())
+  value       Float    @default(0)
+  description String
+  date        DateTime
+  fixed       Boolean  @default(false)
+  userId      String
+  user        user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
