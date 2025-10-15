@@ -50,9 +50,20 @@ export const PATCH = withAuth(async (request, { user }) => {
             );
         }
 
+        const existingBalance = await prisma.balance.findUnique({
+            where: { userId: user.id },
+        });
+
+        if (!existingBalance) {
+            return NextResponse.json(
+                { error: "Saldo não encontrado" },
+                { status: 404 }
+            );
+        }
+
         const balance = await prisma.balance.update({
             where: { userId: user.id },
-            data: { value },
+            data: { value: existingBalance.value + value },
         });
 
         return NextResponse.json({
