@@ -9,17 +9,35 @@ const prisma = new PrismaClient();
  * Lista todas as receitas do usuário autenticado
  */
 export const GET = withAuth(async (request, { user }) => {
+    const { searchParams } = new URL(request.url);
+    const extra = searchParams.get("extra") === "true";
+
     try {
-        const incomes = await prisma.income.findMany({
-            select: {
-                id: true,
-                value: true,
-                description: true,
-            },
-            where: { userId: user.id, extra: false },
-            orderBy: { date: "desc" },
-        });
-        return NextResponse.json(incomes, { status: 200 });
+
+        if (extra) {
+            const incomes = await prisma.income.findMany({
+                select: {
+                    id: true,
+                    value: true,
+                    description: true,
+                    date: true,
+                },
+                where: { userId: user.id, extra: true },
+                orderBy: { date: "desc" },
+            });
+            return NextResponse.json(incomes, { status: 200 });
+        } else {
+            const incomes = await prisma.income.findMany({
+                select: {
+                    id: true,
+                    value: true,
+                    description: true,
+                },
+                where: { userId: user.id, extra: false },
+                orderBy: { date: "desc" },
+            });
+            return NextResponse.json(incomes, { status: 200 });
+        }
     } catch (error) {
         console.error("Erro ao listar receitas:", error);
         return NextResponse.json(
@@ -27,8 +45,6 @@ export const GET = withAuth(async (request, { user }) => {
             { status: 500 }
         );
     }
-
-   
 });
 
 export const POST = withAuth(async (request, { user }) => {
