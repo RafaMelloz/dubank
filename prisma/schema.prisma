@@ -99,7 +99,7 @@ model expense {
   value       Float    @default(0)
   description String
   date        DateTime
-  fixed       Boolean  @default(false)
+  extra       Boolean  @default(false)
   userId      String
   user        user     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

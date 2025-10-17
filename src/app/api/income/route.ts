@@ -13,7 +13,6 @@ export const GET = withAuth(async (request, { user }) => {
     const extra = searchParams.get("extra") === "true";
 
     try {
-
         if (extra) {
             const incomes = await prisma.income.findMany({
                 select: {
