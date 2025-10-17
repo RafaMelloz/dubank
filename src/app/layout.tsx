@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/shared/providers/theme-provider";
+import { Providers } from "@/shared/providers/theme-provider";
 import "./globals.css";
 
 export default function RootLayout({
@@ -9,13 +9,13 @@ export default function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <body>
-        <ThemeProvider
+        <Providers
           attribute="class"
           defaultTheme="system"
           enableSystem
         >
             {children}
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

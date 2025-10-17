@@ -16,7 +16,7 @@ export default function AccountPage() {
           <BtnLogout />
         </div>
 
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-4 mt-4">
           <ToggleDarkMode />
           <ToggleLayoutMode />
         </div>
