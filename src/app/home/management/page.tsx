@@ -1,11 +1,11 @@
 import { Ban, BanknoteArrowDown, BanknoteArrowUp, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import BalanceForm from "../../../shared/components/forms/balance-form";
-import FixedIncomeForm from "../../../shared/components/forms/fixed-income-form";
-import ExtraIncomeForm from "../../../shared/components/forms/extra-income-form";
-import FixedExpenseForm from "../../../shared/components/forms/fixed-expense-form";
-import ExtraExpenseForm from "../../../shared/components/forms/extra-expense-form";
+import BalanceForm from "./components/forms/balance-form";
+import FixedIncomeForm from "./components/forms/fixed-income-form";
+import ExtraIncomeForm from "./components/forms/extra-income-form";
+import FixedExpenseForm from "./components/forms/fixed-expense-form";
+import ExtraExpenseForm from "./components/forms/extra-expense-form";
 
 type FormType = "balance" | "fixed-income" | "extra-income" | "fixed-expense" | "extra-expense";
 

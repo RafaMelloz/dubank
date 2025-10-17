@@ -126,7 +126,7 @@ export default function ExtraIncomeForm() {
           </div>
         </div>
 
-        <div>
+        <div className="w-full">
           <label htmlFor="date" className="block text-sm font-medium mb-2">
             Data
           </label>
