@@ -17,7 +17,7 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="flex flex-col gap-2 h-dvh mx-auto  py-5 md:px-0 md:container overflow-hidden">
+    <main className="flex flex-col gap-2 h-dvh mx-auto py-5 md:px-0 md:max-w-2xl  overflow-hidden">
       <section className="flex-1 overflow-y-auto px-4">
         {children}
       </section>

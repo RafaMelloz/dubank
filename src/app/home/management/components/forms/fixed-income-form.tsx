@@ -18,6 +18,13 @@ export default function FixedIncomeForm() {
   const { data: session } = useSession()
   const [incomes, setIncomes] = useState<Income[]>([]);
 
+  const firstDayOfCurrentMonth = () => {
+    const now = new Date();
+    const d = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} 00:00:00`;
+  };
+
   const {
     register,
     handleSubmit,
@@ -25,7 +32,7 @@ export default function FixedIncomeForm() {
     reset,
   } = useForm<BaseFormData>({
     resolver: zodResolver(baseFormSchema),
-    defaultValues: { date: new Date().toISOString().split("T")[0] },
+    defaultValues: { date: firstDayOfCurrentMonth() },
   });
 
   useEffect(() => {
