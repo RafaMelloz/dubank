@@ -2,6 +2,7 @@ import { auth } from "@/shared/libs/better-auth/auth";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { headers } from "next/headers";
 import { getMonthlyMovements, getWalletSummary } from "@/shared/actions/actions";
+import { Chart } from "@/shared/components/chart";
 
 // Formata data como dd/m (BR) usando UTC para evitar mudar para o dia anterior por fuso horário
 function formatDateBR(date: Date | string) {
@@ -46,12 +47,13 @@ export default async function WalletPage() {
       </div>
 
       {/* Card de movimentações */}
-      <h2 className="mt-3 mb-1 font-semibold text-xl">Últimas movimentações</h2>
-      <div className="card">
+      <div className="card mt-4">
+        <h2 className="mb-1 font-semibold text-xl">Últimas movimentações</h2>
+
         {movements.length === 0 ? (
           <p className="text-sm opacity-75">Nenhuma movimentação neste mês.</p>
         ) : (
-          <ul className="space-y-2">
+          <ul>
             {movements.map((m) => (
               <li key={m.id} className="py-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -65,6 +67,12 @@ export default async function WalletPage() {
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="card mt-4">
+        <h2 className="mb-1 font-semibold text-xl">Resumo dos meses</h2>
+
+        <Chart />
       </div>
     </>
   );
