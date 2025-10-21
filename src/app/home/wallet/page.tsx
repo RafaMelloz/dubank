@@ -1,8 +1,9 @@
 import { auth } from "@/shared/libs/better-auth/auth";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { headers } from "next/headers";
 import { getMonthlyMovements, getWalletSummary } from "@/shared/actions/actions";
 import { Chart } from "@/shared/components/chart";
+import Link from "next/link";
 
 // Formata data como dd/m (BR) usando UTC para evitar mudar para o dia anterior por fuso horário
 function formatDateBR(date: Date | string) {
@@ -69,10 +70,16 @@ export default async function WalletPage() {
         )}
       </div>
 
+      {/* Card de gráfico */}
       <div className="card mt-4">
         <h2 className="mb-1 font-semibold text-xl">Resumo dos meses</h2>
-
         <Chart />
+      </div>
+
+      <div className="card mt-4">
+        <Link href={`/home/wallet/info?month=${new Date().getMonth() + 1}`} className="flex gap-2 justify-center items-center font-semibold">
+          <Search className="w-5 h-5 opacity-70"></Search> Ver análise mensal detalhada
+        </Link>
       </div>
     </>
   );
