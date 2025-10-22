@@ -131,6 +131,66 @@ export async function getMonthlyMovements(userId: string, limit = 10): Promise<M
     .slice(0, limit);
 }
 
+export interface MonthlyChartData {
+  mes: string;
+  renda: number;
+  despesas: number;
+}
+
+export async function getMonthlyChartData(userId: string, monthsCount = 6): Promise<MonthlyChartData[]> {
+  const result: MonthlyChartData[] = [];
+  const now = new Date();
+
+  // Nomes dos meses em português
+  const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+  // Iterar pelos últimos N meses
+  for (let i = monthsCount - 1; i >= 0; i--) {
+    const targetDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const firstDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1);
+    const lastDay = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0, 23, 59, 59, 999);
+
+    // Buscar totais de renda fixa (sempre contam) e extras do mês
+    const [fixedIncome, extraIncome, fixedExpense, extraExpense] = await Promise.all([
+      prisma.income.aggregate({
+        where: { userId, extra: false },
+        _sum: { value: true },
+      }),
+      prisma.income.aggregate({
+        where: {
+          userId,
+          extra: true,
+          date: { gte: firstDay, lte: lastDay },
+        },
+        _sum: { value: true },
+      }),
+      prisma.expense.aggregate({
+        where: { userId, extra: false },
+        _sum: { value: true },
+      }),
+      prisma.expense.aggregate({
+        where: {
+          userId,
+          extra: true,
+          date: { gte: firstDay, lte: lastDay },
+        },
+        _sum: { value: true },
+      }),
+    ]);
+
+    const totalIncome = (fixedIncome._sum.value || 0) + (extraIncome._sum.value || 0);
+    const totalExpense = (fixedExpense._sum.value || 0) + (extraExpense._sum.value || 0);
+
+    result.push({
+      mes: monthNames[targetDate.getMonth()],
+      renda: totalIncome,
+      despesas: totalExpense,
+    });
+  }
+
+  return result;
+}
+
 export async function loginAction(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

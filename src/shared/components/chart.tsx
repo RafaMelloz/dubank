@@ -33,10 +33,10 @@ export function Chart({data}: {data?: any[]}) {
                         bottom: 5,
                     }}
                 >
-                    <XAxis dataKey="name" tick={CustomTick} />
+                    <XAxis dataKey="mes" tick={CustomTick} />
                     <Tooltip cursor={false} content={<CustomTooltip />} />
-                    <Bar dataKey="uv" fill="#ff637e" shape={RoundedBar} />
-                    <Bar dataKey="pv" fill="#00d492" shape={RoundedBar} />
+                    <Bar dataKey="renda" fill="#00d492" shape={RoundedBar} />
+                    <Bar dataKey="despesas" fill="#ff637e" shape={RoundedBar} />
                 </BarChart>
             </ResponsiveContainer>
         </div>
@@ -69,7 +69,7 @@ function CustomTooltip({ active, payload = [], label }: CustomTooltipProps) {
 
 function RoundedBar(props: any) {
     const { x, y, width, height, fill } = props;
-    const radius = Math.min(width / 2, 12); // máximo 12px de raio, nunca maior que metade da largura
+    const radius = Math.min(width / 2, 6); // máximo 6px de raio, nunca maior que metade da largura
     // Path SVG para arredondar só o topo
     const right = x + width;
     const bottom = y + height;
