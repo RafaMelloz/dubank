@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "DuBank",
   description: "Controle de finanças pessoal",
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.webmanifest",
   // iOS specific behavior when added to Home Screen
   appleWebApp: {
     capable: true,
