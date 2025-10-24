@@ -17,10 +17,6 @@
         dark:from-sky-700 dark:via-sky-800 dark:to-sky-900 duration-100
         text-blue-950 dark:text-cyan-50
       ;
-
-    /* Evita a "barra branca" e respeita as áreas seguras do iOS */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
