@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { PrismaClient } from "@/generated/prisma";
 import { MovementItem } from "../interfaces/movimentItem";
+import { MonthlyChartData } from "../interfaces/monthlyChartData";
 
 const prisma = new PrismaClient();
 
@@ -129,12 +130,6 @@ export async function getMonthlyMovements(userId: string, limit = 10): Promise<M
   return mapped
     .sort((a, b) => b.date.getTime() - a.date.getTime())
     .slice(0, limit);
-}
-
-export interface MonthlyChartData {
-  mes: string;
-  renda: number;
-  despesas: number;
 }
 
 export async function getMonthlyChartData(userId: string, monthsCount = 6): Promise<MonthlyChartData[]> {

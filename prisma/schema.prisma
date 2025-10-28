@@ -16,18 +16,19 @@ datasource db {
 }
 
 model user {
-  id            String    @id
-  name          String
-  email         String    @unique
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  accounts      account[]
-  sessions      session[]
-  balance       balance?
-  income        income[]
-  expense       expense[]
+  id                String              @id
+  name              String
+  email             String              @unique
+  emailVerified     Boolean
+  image             String?
+  createdAt         DateTime
+  updatedAt         DateTime
+  accounts          account[]
+  sessions          session[]
+  balance           balance?
+  income            income[]
+  expense           expense[]
+  monthly_registers monthly_registers[]
 }
 
 model session {
@@ -89,9 +90,8 @@ model income {
   extra       Boolean  @default(false)
   userId      String
   user        user     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model expense {
@@ -102,7 +102,18 @@ model expense {
   extra       Boolean  @default(false)
   userId      String
   user        user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model monthly_registers {
+  id           String   @id @default(uuid())
+  income       Float    @default(0)
+  expense      Float    @default(0)
+  extraIncome  Float    @default(0)
+  extraExpense Float    @default(0)
+  userId       String
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
