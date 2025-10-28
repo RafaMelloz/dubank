@@ -1,7 +1,7 @@
 "use client"
 
 import { login, LoginSchema, signup, SignupSchema } from "@/shared/schemas/auth-schema";
-import { LogIn, UserRoundPlus } from "lucide-react";
+import { LoaderCircle, LogIn, SplineIcon, UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [typeForm, setTypeForm] = useState<"login" | "signup">("login");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const {
@@ -26,6 +27,7 @@ export default function Home() {
 
     if (typeForm === "login") {
       try {
+        setIsLoading(true);
         await signIn.email({
           email: data.email,
           password: data.password,
@@ -33,12 +35,14 @@ export default function Home() {
         router.push("/home/wallet");
       } catch (error) {
         console.error("Erro no login:", error);
+        setIsLoading(false);
       }
     } 
     
     if (typeForm === "signup") {
       const signupData = data as SignupSchema;
       try {
+        setIsLoading(true);
         await signUp.email({
           name: signupData.name,
           email: signupData.email,
@@ -47,6 +51,7 @@ export default function Home() {
         router.push("/home/wallet");
       } catch (error) {
         console.error("Erro no cadastro:", error);
+        setIsLoading(false);
       }
     }
   }
@@ -62,7 +67,7 @@ export default function Home() {
                 Entrar
               </h2>
 
-              <button className="btn" type="button" onClick={() => setTypeForm("signup")}>
+              <button className="btn disabled:opacity-50" disabled={isLoading} type="button" onClick={() => setTypeForm("signup")}>
                 <UserRoundPlus />
               </button>
             </div>
@@ -97,8 +102,9 @@ export default function Home() {
                   placeholder="••••••••"
                 />
               </div>
-              <button type="submit" className="btn w-full">
-                Entrar
+              <button type="submit" className="btn w-full disabled:opacity-50" disabled={isLoading}>
+                { isLoading ? 'Entrando...' : 'Entrar' }
+                { isLoading && <LoaderCircle className="h-4 w-4 animate-spin" /> }
               </button>
             </form>
           </div>
@@ -112,7 +118,7 @@ export default function Home() {
                 Criar conta
               </h2>
 
-              <button className="btn" type="button" onClick={() => setTypeForm("login")}>
+              <button className="btn disabled:opacity-50" disabled={isLoading} type="button" onClick={() => setTypeForm("login")} >
                 <LogIn />
               </button>
             </div>
@@ -163,8 +169,9 @@ export default function Home() {
                   placeholder="••••••••"
                 />
               </div>
-              <button type="submit" className="w-full btn">
-                Criar Conta
+              <button type="submit" className="btn w-full disabled:opacity-50" disabled={isLoading}>
+                { isLoading ? 'Criando' : 'Criar conta' }
+                { isLoading && <LoaderCircle className="h-4 w-4 animate-spin" /> }
               </button>
             </form>
           </div>

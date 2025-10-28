@@ -88,7 +88,7 @@
   }
 
   /* Hover dos botões */
-  .btn:hover {
+  .btn:not(:disabled):hover {
     @apply bg-white/20 dark:bg-gray-700/30 text-cyan-500 scale-105;
   }
 
