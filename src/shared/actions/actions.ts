@@ -135,49 +135,76 @@ export async function getMonthlyMovements(userId: string, limit = 10): Promise<M
 export async function getMonthlyChartData(userId: string, monthsCount = 6): Promise<MonthlyChartData[]> {
   const result: MonthlyChartData[] = [];
   const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
 
   // Nomes dos meses em português
   const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
   // Iterar pelos últimos N meses
   for (let i = monthsCount - 1; i >= 0; i--) {
-    const targetDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const firstDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1);
-    const lastDay = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0, 23, 59, 59, 999);
+    const targetDate = new Date(currentYear, currentMonth - i, 1);
+    const targetMonth = targetDate.getMonth();
+    const targetYear = targetDate.getFullYear();
+    const firstDay = new Date(targetYear, targetMonth, 1);
+    const lastDay = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999);
 
-    // Buscar totais de renda fixa (sempre contam) e extras do mês
-    const [fixedIncome, extraIncome, fixedExpense, extraExpense] = await Promise.all([
-      prisma.income.aggregate({
-        where: { userId, extra: false },
-        _sum: { value: true },
-      }),
-      prisma.income.aggregate({
+    const isCurrentMonth = targetMonth === currentMonth && targetYear === currentYear;
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    if (isCurrentMonth) {
+      // Para o mês atual, calcular dinamicamente
+      const [fixedIncome, extraIncome, fixedExpense, extraExpense] = await Promise.all([
+        prisma.income.aggregate({
+          where: { userId, extra: false },
+          _sum: { value: true },
+        }),
+        prisma.income.aggregate({
+          where: {
+            userId,
+            extra: true,
+            date: { gte: firstDay, lte: lastDay },
+          },
+          _sum: { value: true },
+        }),
+        prisma.expense.aggregate({
+          where: { userId, extra: false },
+          _sum: { value: true },
+        }),
+        prisma.expense.aggregate({
+          where: {
+            userId,
+            extra: true,
+            date: { gte: firstDay, lte: lastDay },
+          },
+          _sum: { value: true },
+        }),
+      ]);
+
+      totalIncome = (fixedIncome._sum.value || 0) + (extraIncome._sum.value || 0);
+      totalExpense = (fixedExpense._sum.value || 0) + (extraExpense._sum.value || 0);
+    } else {
+      // Para meses anteriores, buscar da tabela monthly_registers
+      const monthlyRegister = await prisma.monthly_registers.findFirst({
         where: {
           userId,
-          extra: true,
-          date: { gte: firstDay, lte: lastDay },
+          registerDate: {
+            gte: firstDay,
+            lte: lastDay,
+          },
         },
-        _sum: { value: true },
-      }),
-      prisma.expense.aggregate({
-        where: { userId, extra: false },
-        _sum: { value: true },
-      }),
-      prisma.expense.aggregate({
-        where: {
-          userId,
-          extra: true,
-          date: { gte: firstDay, lte: lastDay },
-        },
-        _sum: { value: true },
-      }),
-    ]);
+      });
 
-    const totalIncome = (fixedIncome._sum.value || 0) + (extraIncome._sum.value || 0);
-    const totalExpense = (fixedExpense._sum.value || 0) + (extraExpense._sum.value || 0);
+      if (monthlyRegister) {
+        totalIncome = monthlyRegister.income || 0;
+        totalExpense = monthlyRegister.expense || 0;
+      }
+    }
 
     result.push({
-      mes: monthNames[targetDate.getMonth()],
+      mes: monthNames[targetMonth],
       renda: totalIncome,
       despesas: totalExpense,
     });

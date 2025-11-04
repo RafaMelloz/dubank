@@ -18,21 +18,22 @@ export const GET = withAuth(async (request, { user }) => {
     }
 
     try {
-        const start = new Date(year, month - 1, 1);
-        const end = new Date(year, month, 1);
+        // Garantir UTC 00:00:00.000 no início e 23:59:59.999 no fim
+        const start = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+        const end = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
 
         const [incomes, expenses] = await Promise.all([
             prisma.income.findMany({
                 where: {
                     userId: user.id,
-                    date: { gte: start, lt: end },
+                    date: { gte: start, lte: end },
                 },
                 orderBy: { date: "asc" },
             }),
             prisma.expense.findMany({
                 where: {
                     userId: user.id,
-                    date: { gte: start, lt: end },
+                    date: { gte: start, lte: end },
                 },
                 orderBy: { date: "asc" },
             }),
