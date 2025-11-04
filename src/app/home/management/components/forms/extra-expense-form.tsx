@@ -9,6 +9,7 @@ import { BaseFormData, baseFormSchema } from "@/shared/schemas/base-form";
 import { useSession } from "@/shared/libs/better-auth/auth-client";
 import { Expense } from "@/shared/interfaces/expense";
 import { Loader2, Trash } from "lucide-react";
+import { formatDateBR } from "@/shared/helpers/date";
 
 export default function ExtraExpenseForm() {
   const router = useRouter();
@@ -154,7 +155,11 @@ export default function ExtraExpenseForm() {
                 key={expense.id}
                 className="flex justify-between items-center rounded-lg"
               >
-                <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm opacity-70">
+                    {formatDateBR(expense.date)}
+                  </p>
+
                   <p className="font-medium">
                     {expense.description}
                     <span className="text-sm text-green-500"> - R$ {expense.value.toFixed(2).replace(".", ",")}</span>

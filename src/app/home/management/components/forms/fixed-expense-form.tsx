@@ -9,6 +9,7 @@ import { BaseFormData, baseFormSchema } from "@/shared/schemas/base-form";
 import { Expense } from "@/shared/interfaces/expense";
 import { useSession } from "@/shared/libs/better-auth/auth-client";
 import { Loader2, Trash } from "lucide-react";
+import { formatDateBR } from "@/shared/helpers/date";
 
 export default function FixedExpenseForm() {
   const router = useRouter();
@@ -18,13 +19,6 @@ export default function FixedExpenseForm() {
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession()
 
-  const firstDayOfCurrentMonth = () => {
-    const now = new Date();
-    const d = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
-    const pad = (n: number) => String(n).padStart(2, "0");
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} 00:00:00`;
-  };
-
   const {
     register,
     handleSubmit,
@@ -32,7 +26,6 @@ export default function FixedExpenseForm() {
     reset,
   } = useForm<BaseFormData>({
     resolver: zodResolver(baseFormSchema),
-    defaultValues: { date: firstDayOfCurrentMonth() },
   });
 
   useEffect(() => {
@@ -147,7 +140,11 @@ export default function FixedExpenseForm() {
                 key={expense.id}
                 className="flex justify-between items-center rounded-lg"
               >
-                <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm opacity-70">
+                    {formatDateBR(expense.date)}
+                  </p>
+
                   <p className="font-medium">
                     {expense.description}
                     <span className="text-sm text-green-500"> - R$ {expense.value.toFixed(2).replace(".", ",")}</span>

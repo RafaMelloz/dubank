@@ -13,32 +13,18 @@ export const GET = withAuth(async (request, { user }) => {
     const extra = searchParams.get("extra") === "true";
 
     try {
-        if (extra) {
-            const incomes = await prisma.income.findMany({
-                select: {
-                    id: true,
-                    value: true,
-                    description: true,
-                    date: true,
-                },
-                where: { userId: user.id, extra: true },
-                orderBy: { date: "desc" },
-            });
-            return NextResponse.json(incomes, { status: 200 });
-        } else {
-            const incomes = await prisma.income.findMany({
-                select: {
-                    id: true,
-                    value: true,
-                    description: true,
-                },
-                where: { userId: user.id, extra: false },
-                orderBy: { date: "desc" },
-            });
-            return NextResponse.json(incomes, { status: 200 });
-        }
+        const incomes = await prisma.income.findMany({
+            select: {
+                id: true,
+                value: true,
+                description: true,
+                date: true,
+            },
+            where: { userId: user.id, extra: extra },
+            orderBy: { date: "desc" },
+        });
+        return NextResponse.json(incomes, { status: 200 });
     } catch (error) {
-        console.error("Erro ao listar receitas:", error);
         return NextResponse.json(
             { error: "Erro ao listar receitas" },
             { status: 500 }

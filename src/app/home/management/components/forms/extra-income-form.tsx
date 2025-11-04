@@ -9,6 +9,7 @@ import { BaseFormData, baseFormSchema } from "@/shared/schemas/base-form";
 import { useSession } from "@/shared/libs/better-auth/auth-client";
 import { Income } from "@/shared/interfaces/income";
 import { Loader2, Trash } from "lucide-react";
+import { formatDateBR } from "@/shared/helpers/date";
 
 export default function ExtraIncomeForm() {
   const router = useRouter();
@@ -154,7 +155,11 @@ export default function ExtraIncomeForm() {
                 key={income.id}
                 className="flex justify-between items-center rounded-lg"
               >
-                <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm opacity-70">
+                    {formatDateBR(income.date)}
+                  </p>
+
                   <p className="font-medium">
                     {income.description}
                     <span className="text-sm text-green-500"> - R$ {income.value.toFixed(2).replace(".", ",")}</span>

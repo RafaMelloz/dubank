@@ -9,6 +9,7 @@ import { BaseFormData, baseFormSchema } from "@/shared/schemas/base-form";
 import { Income } from "@/shared/interfaces/income";
 import { useSession } from "@/shared/libs/better-auth/auth-client";
 import { Loader2, Trash } from "lucide-react";
+import { formatDateBR } from "@/shared/helpers/date";
 
 export default function FixedIncomeForm() {
   const router = useRouter();
@@ -18,13 +19,6 @@ export default function FixedIncomeForm() {
   const { data: session } = useSession()
   const [incomes, setIncomes] = useState<Income[]>([]);
 
-  const firstDayOfCurrentMonth = () => {
-    const now = new Date();
-    const d = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
-    const pad = (n: number) => String(n).padStart(2, "0");
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} 00:00:00`;
-  };
-
   const {
     register,
     handleSubmit,
@@ -32,7 +26,6 @@ export default function FixedIncomeForm() {
     reset,
   } = useForm<BaseFormData>({
     resolver: zodResolver(baseFormSchema),
-    defaultValues: { date: firstDayOfCurrentMonth() },
   });
 
   useEffect(() => {
@@ -44,8 +37,6 @@ export default function FixedIncomeForm() {
   const onSubmit = async (data: BaseFormData) => {
     setIsLoading(true);
     setError(null);
-    console.log(data);
-    
 
     try {
       const numValue = parseFloat(data.value.replace(",", "."));
@@ -97,6 +88,8 @@ export default function FixedIncomeForm() {
     }
   };
 
+ 
+
   return (
     <div className="card">
       <h1 className="text-2xl font-bold mb-6">Adicionar Renda Fixa</h1>
@@ -136,6 +129,21 @@ export default function FixedIncomeForm() {
           </div>
         </div>
 
+        <div className="w-full">
+          <label htmlFor="date" className="block text-sm font-medium mb-2">
+            Data
+          </label>
+          <input
+            id="date"
+            type="date"
+            {...register("date")}
+            className="input"
+          />
+          {errors.date && (
+            <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>
+          )}
+        </div>
+
         {error && (
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg">
             {error}
@@ -149,12 +157,15 @@ export default function FixedIncomeForm() {
                 key={income.id}
                 className="flex justify-between items-center rounded-lg"
               >
-                <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm opacity-70">
+                    {formatDateBR(income.date)}
+                  </p>
+
                   <p className="font-medium">
                     {income.description}
                     <span className="text-sm text-green-500"> - R$ {income.value.toFixed(2).replace(".", ",")}</span>
                   </p>
-
                 </div>
                 <button
                   type="button"
