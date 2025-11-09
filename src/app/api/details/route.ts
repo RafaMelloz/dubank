@@ -1,8 +1,8 @@
 import { withAuth } from "@/shared/libs/better-auth/auth-middleware";
 import { PrismaClient } from "@/generated/prisma";
 import { NextResponse } from "next/server";
+import prisma from "../../../shared/libs/prisma/prisma";
 
-const prisma = new PrismaClient();
 
 export const GET = withAuth(async (request, { user }) => {
     // GET não possui body. Leia os parâmetros da URL (?month=10&year=2025)

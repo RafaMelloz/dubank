@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/shared/libs/axios/axios";
 import { useRouter } from "next/navigation";
 import { BaseFormData, baseFormSchema } from "@/shared/schemas/base-form";
 import { Expense } from "@/shared/interfaces/expense";
@@ -46,7 +46,7 @@ export default function FixedExpenseForm() {
         return;
       }
 
-      await axios.post("/api/expense", {
+      await api.post("/api/expense", {
         value: numValue,
         description: data.description,
         date: new Date(data.date).toISOString(),
@@ -68,7 +68,7 @@ export default function FixedExpenseForm() {
     if (!session?.user?.id) return;
     setIsLoadingExpenses(true);
     try {
-      const response = await axios.get("/api/expense");
+      const response = await api.get("/api/expense");
       setExpenses(response.data || []);
       setIsLoadingExpenses(false);
     } catch (error) {
@@ -81,7 +81,7 @@ export default function FixedExpenseForm() {
   const deleteExpense = async (id: string) => {
     if (!session?.user?.id) return;
     try {
-      await axios.delete("/api/expense", { data: { id } });
+      await api.delete("/api/expense", { data: { id } });
       fetchExpenses();
     } catch (error) {
       console.error("Erro ao deletar receita:", error);

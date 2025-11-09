@@ -3,11 +3,10 @@
 import { auth } from "@/shared/libs/better-auth/auth";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { PrismaClient } from "@/generated/prisma";
 import { MovementItem } from "../interfaces/movimentItem";
 import { MonthlyChartData } from "../interfaces/monthlyChartData";
+import prisma from "@/shared/libs/prisma/prisma";
 
-const prisma = new PrismaClient();
 
 export async function getWalletSummary(userId: string) {
   // Pegar o primeiro e último dia do mês atual

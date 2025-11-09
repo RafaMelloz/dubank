@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/shared/libs/better-auth/auth-middleware";
-import { PrismaClient } from "@/generated/prisma";
+import prisma from "@/shared/libs/prisma/prisma";
 
-const prisma = new PrismaClient();
 
 /**
  * GET /api/income

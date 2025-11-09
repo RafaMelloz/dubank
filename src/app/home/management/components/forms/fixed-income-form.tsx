@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {  useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/shared/libs/axios/axios";
 import { useRouter } from "next/navigation";
 import { BaseFormData, baseFormSchema } from "@/shared/schemas/base-form";
 import { Income } from "@/shared/interfaces/income";
@@ -46,7 +46,7 @@ export default function FixedIncomeForm() {
         return;
       }
 
-      await axios.post("/api/income", {
+      await api.post("/api/income", {
         value: numValue,
         description: data.description,
         date: new Date(data.date).toISOString(),
@@ -68,7 +68,7 @@ export default function FixedIncomeForm() {
     if (!session?.user?.id) return;
     setIsLoadingIncomes(true);
     try {
-      const response = await axios.get("/api/income");
+      const response = await api.get("/api/income");
       setIncomes(response.data || []);
       setIsLoadingIncomes(false);
     } catch (error) {
@@ -81,7 +81,7 @@ export default function FixedIncomeForm() {
   const deleteIncome = async (id: string) => {
     if (!session?.user?.id) return;
     try {
-      await axios.delete("/api/income", { data: { id } });
+      await api.delete("/api/income", { data: { id } });
       fetchIncomes();
     } catch (error) {
       console.error("Erro ao deletar receita:", error);

@@ -3,9 +3,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { BalanceFormData, balanceSchema } from "@/shared/schemas/balance-schema";
+import { api } from "@/shared/libs/axios/axios";
 
 export default function BalanceForm() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function BalanceForm() {
         return;
       }
 
-      await axios.patch("/api/balance", {
+      await api.patch("/api/balance", {
         value: data.action === "subtract" ? -numValue : numValue,
       });
 
