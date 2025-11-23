@@ -24,6 +24,10 @@ export async function getWalletSummary(userId: string) {
     where: {
       userId,
       extra: false,
+      date: {
+        gte: firstDayOfMonth,
+        lte: lastDayOfMonth,
+      },
     },
     _sum: {
       value: true,
@@ -50,6 +54,10 @@ export async function getWalletSummary(userId: string) {
     where: {
       userId,
       extra: false,
+      date: {
+        gte: firstDayOfMonth,
+        lte: lastDayOfMonth,
+      },
     },
     _sum: {
       value: true,
@@ -157,7 +165,7 @@ export async function getMonthlyChartData(userId: string, monthsCount = 6): Prom
       // Para o mês atual, calcular dinamicamente
       const [fixedIncome, extraIncome, fixedExpense, extraExpense] = await Promise.all([
         prisma.income.aggregate({
-          where: { userId, extra: false },
+          where: { userId, extra: false, date: { gte: firstDay, lte: lastDay } },
           _sum: { value: true },
         }),
         prisma.income.aggregate({
@@ -169,7 +177,7 @@ export async function getMonthlyChartData(userId: string, monthsCount = 6): Prom
           _sum: { value: true },
         }),
         prisma.expense.aggregate({
-          where: { userId, extra: false },
+          where: { userId, extra: false, date: { gte: firstDay, lte: lastDay } },
           _sum: { value: true },
         }),
         prisma.expense.aggregate({
@@ -210,52 +218,4 @@ export async function getMonthlyChartData(userId: string, monthsCount = 6): Prom
   }
 
   return result;
-}
-
-export async function loginAction(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  try {
-    const response = await auth.api.signInEmail({
-      body: {
-        email,
-        password,
-      },
-      headers: await headers(),
-    });
-
-    if (response?.user) {
-      redirect("/home/wallet");
-    }
-  } catch (error) {
-    console.error("Erro no login:", error);
-    // Silenciosamente falha e recarrega a página
-    // Em produção, você pode adicionar query params para mostrar erro
-  }
-}
-
-export async function signupAction(formData: FormData) {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  try {
-    const response = await auth.api.signUpEmail({
-      body: {
-        name,
-        email,
-        password,
-      },
-      headers: await headers(),
-    });
-
-    if (response?.user) {
-      redirect("/home/wallet");
-    }
-  } catch (error) {
-    console.error("Erro no cadastro:", error);
-    // Silenciosamente falha e recarrega a página
-    // Em produção, você pode adicionar query params para mostrar erro
-  }
 }

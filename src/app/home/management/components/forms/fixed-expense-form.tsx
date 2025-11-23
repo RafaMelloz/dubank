@@ -127,6 +127,21 @@ export default function FixedExpenseForm() {
           </div>
         </div>
 
+        <div className="w-full">
+          <label htmlFor="date" className="block text-sm font-medium mb-2">
+            Data
+          </label>
+          <input
+            id="date"
+            type="date"
+            {...register("date")}
+            className="input"
+          />
+          {errors.date && (
+            <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>
+          )}
+        </div>
+
         {error && (
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg">
             {error}
