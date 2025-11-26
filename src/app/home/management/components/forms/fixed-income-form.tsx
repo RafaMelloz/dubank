@@ -10,6 +10,7 @@ import { Income } from "@/shared/interfaces/income";
 import { useSession } from "@/shared/libs/better-auth/auth-client";
 import { Loader2, Trash } from "lucide-react";
 import { formatDateBR } from "@/shared/helpers/date";
+import { confirmToast, errorToast, loadingAlert, successToast } from "@/shared/libs/react-hot-toast/react-hot-toast";
 
 export default function FixedIncomeForm() {
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function FixedIncomeForm() {
         extra: false, // Renda fixa não é extra
       });
 
+      successToast("Registro adicionado com sucesso!");
       reset();
       router.push("/home/management");
       router.refresh();
@@ -72,7 +74,7 @@ export default function FixedIncomeForm() {
       setIncomes(response.data || []);
       setIsLoadingIncomes(false);
     } catch (error) {
-      console.error("Erro ao buscar receitas:", error);
+      errorToast("Erro ao recuperar registros");
     } finally {
       setIsLoadingIncomes(false);
     }
@@ -80,15 +82,17 @@ export default function FixedIncomeForm() {
 
   const deleteIncome = async (id: string) => {
     if (!session?.user?.id) return;
-    try {
-      await api.delete("/api/income", { data: { id } });
-      fetchIncomes();
-    } catch (error) {
-      console.error("Erro ao deletar receita:", error);
-    }
-  };
 
- 
+    confirmToast("Deseja realmente excluir?", async () => {
+      const promise = api.delete("/api/income", { data: { id } });
+      loadingAlert("Excluindo registro...", "Registro excluído com sucesso!", "Erro ao excluir registro", promise);
+      promise.then((response) => {
+        if (response.status === 200) {
+          fetchIncomes();
+        }
+      })
+    });
+  };
 
   return (
     <div className="card">

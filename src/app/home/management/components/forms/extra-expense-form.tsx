@@ -10,6 +10,7 @@ import { Expense } from "@/shared/interfaces/expense";
 import { Loader2, Trash } from "lucide-react";
 import { formatDateBR } from "@/shared/helpers/date";
 import { api } from "@/shared/libs/axios/axios";
+import { confirmToast, errorToast, loadingAlert, successToast } from "@/shared/libs/react-hot-toast/react-hot-toast";
 
 export default function ExtraExpenseForm() {
   const router = useRouter();
@@ -54,6 +55,7 @@ export default function ExtraExpenseForm() {
       });
 
       reset();
+      successToast("Registro adicionado com sucesso!");
       router.push("/home/management");
       router.refresh();
     } catch (err) {
@@ -72,7 +74,7 @@ export default function ExtraExpenseForm() {
       setExpenses(response.data || []);
       setIsLoadingExpenses(false);
     } catch (error) {
-      console.error("Erro ao buscar receitas:", error);
+      errorToast("Erro ao recuperar registros");
     } finally {
       setIsLoadingExpenses(false);
     }
@@ -80,12 +82,16 @@ export default function ExtraExpenseForm() {
 
   const deleteExpense = async (id: string) => {
     if (!session?.user?.id) return;
-    try {
-      await api.delete("/api/expense", { data: { id } });
-      fetchExpenses();
-    } catch (error) {
-      console.error("Erro ao deletar receita:", error);
-    }
+
+    confirmToast("Deseja realmente excluir?", async () => {
+      const promise = api.delete("/api/expense", { data: { id } });
+      loadingAlert("Excluindo registro...", "Registro excluído com sucesso!", "Erro ao excluir registro", promise);
+      promise.then((response) => {
+        if (response.status === 200) {
+          fetchExpenses();
+        }
+      })
+    });
   };
 
   return (

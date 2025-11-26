@@ -1,6 +1,7 @@
 import { Providers } from "@/shared/providers/theme-provider";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 // Define viewport/meta so the PWA opens without the white status bar on mobile
 export const viewport: Viewport = {
@@ -39,6 +40,13 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
         >
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{
+              className: 'toast-custom',
+            }}
+          />
             {children}
         </Providers>
       </body>

@@ -235,7 +235,7 @@
   .radio-input:checked::before {
     @apply 
       border-cyan-500 dark:border-cyan-400
-      bg-gradient-to-br from-cyan-400 to-cyan-600
+      bg-linear-to-br from-cyan-400 to-cyan-600
       shadow-lg;
     
     box-shadow: 
@@ -249,6 +249,11 @@
     @apply 
       border-cyan-400 dark:border-cyan-500
       scale-110;
+  }
+
+  .toast-custom{
+    @apply
+      bg-amber-400!
   }
 }
 

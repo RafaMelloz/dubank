@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, signUp } from "@/shared/libs/better-auth/auth-client";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { errorToast } from "@/shared/libs/react-hot-toast/react-hot-toast";
 
 export default function Home() {
   const [typeForm, setTypeForm] = useState<"login" | "signup">("login");
@@ -24,34 +26,36 @@ export default function Home() {
   });
 
   async function onSubmit(data: LoginSchema | SignupSchema) {
+    setIsLoading(true);
 
     if (typeForm === "login") {
-      try {
-        setIsLoading(true);
-        await signIn.email({
-          email: data.email,
-          password: data.password,
-        });
-        router.push("/home/wallet");
-      } catch (error) {
-        console.error("Erro no login:", error);
+      const response = await signIn.email({
+        email: data.email,
+        password: data.password,
+        rememberMe: true,
+        callbackURL: '/home/wallet'
+      });
+
+      if (response?.error) {
+        errorToast('Credenciais inválidas. Por favor, tente novamente.');
         setIsLoading(false);
+        return;
       }
     } 
     
     if (typeForm === "signup") {
       const signupData = data as SignupSchema;
-      try {
-        setIsLoading(true);
-        await signUp.email({
-          name: signupData.name,
-          email: signupData.email,
-          password: signupData.password,
-        });
-        router.push("/home/wallet");
-      } catch (error) {
-        console.error("Erro no cadastro:", error);
+        const response = await signUp.email({
+        name: signupData.name,
+        email: signupData.email,
+        password: signupData.password,
+        callbackURL: '/home/wallet',
+      });
+
+      if (response?.error) {
+        errorToast('Erro ao criar conta. Por favor, tente novamente.');
         setIsLoading(false);
+        return;
       }
     }
   }
@@ -103,7 +107,7 @@ export default function Home() {
                 />
               </div>
               <button type="submit" className="btn w-full disabled:opacity-50" disabled={isLoading}>
-                { isLoading ? 'Entrando...' : 'Entrar' }
+                { isLoading ? 'Entrando' : 'Entrar' }
                 { isLoading && <LoaderCircle className="h-4 w-4 animate-spin" /> }
               </button>
             </form>

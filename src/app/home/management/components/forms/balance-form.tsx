@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { BalanceFormData, balanceSchema } from "@/shared/schemas/balance-schema";
 import { api } from "@/shared/libs/axios/axios";
+import { successToast } from "@/shared/libs/react-hot-toast/react-hot-toast";
 
 export default function BalanceForm() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function BalanceForm() {
         value: data.action === "subtract" ? -numValue : numValue,
       });
 
+      successToast("Saldo atualizado com sucesso!");
       reset();
       router.push("/home/wallet");
       router.refresh();
