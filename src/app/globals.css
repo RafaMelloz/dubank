@@ -157,11 +157,28 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    min-width: 0; /* Permite que o flex/grid encolha o input */
   }
 
-  /* Ajusta o seletor de data no iOS */
+  /* Ajusta o seletor de data no iOS - mais agressivo */
   .input[type="date"]::-webkit-date-and-time-value {
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block;
+  }
+
+  /* Remove padding interno do iOS que pode causar overflow */
+  .input[type="date"]::-webkit-datetime-edit {
+    overflow: hidden;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+  }
+
+  /* Ajusta os campos internos do date picker no iOS */
+  .input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     overflow: hidden;
     text-overflow: ellipsis;
   }
