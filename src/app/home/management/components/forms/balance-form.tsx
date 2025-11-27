@@ -44,7 +44,6 @@ export default function BalanceForm() {
       successToast("Saldo atualizado com sucesso!");
       reset();
       router.push("/home/wallet");
-      router.refresh();
     } catch (err) {
       setError("Erro ao atualizar saldo. Tente novamente.");
       console.error(err);

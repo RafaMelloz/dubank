@@ -57,7 +57,6 @@ export default function ExtraIncomeForm() {
       reset();
       successToast("Registro extra adicionado com sucesso!");
       router.push("/home/management");
-      router.refresh();
     } catch (err) {
       setError("Erro ao adicionar renda extra. Tente novamente.");
       console.error(err);

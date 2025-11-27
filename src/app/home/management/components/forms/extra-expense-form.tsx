@@ -57,7 +57,6 @@ export default function ExtraExpenseForm() {
       reset();
       successToast("Registro adicionado com sucesso!");
       router.push("/home/management");
-      router.refresh();
     } catch (err) {
       setError("Erro ao adicionar despesa extra. Tente novamente.");
       console.error(err);

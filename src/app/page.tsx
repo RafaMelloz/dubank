@@ -6,14 +6,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, signUp } from "@/shared/libs/better-auth/auth-client";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { errorToast } from "@/shared/libs/react-hot-toast/react-hot-toast";
 
 export default function Home() {
   const [typeForm, setTypeForm] = useState<"login" | "signup">("login");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const {
     register, //Função que conecta um campo HTML ao React Hook Form.

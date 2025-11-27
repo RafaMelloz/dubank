@@ -57,7 +57,6 @@ export default function FixedIncomeForm() {
       successToast("Registro adicionado com sucesso!");
       reset();
       router.push("/home/management");
-      router.refresh();
     } catch (err) {
       setError("Erro ao adicionar renda fixa. Tente novamente.");
       console.error(err);

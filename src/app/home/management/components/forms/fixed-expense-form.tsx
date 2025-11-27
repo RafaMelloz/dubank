@@ -58,7 +58,6 @@ export default function FixedExpenseForm() {
       successToast("Registro adicionada com sucesso!");
       reset();
       router.push("/home/management");
-      router.refresh();
     } catch (err) {
       setError("Erro ao adicionar despesa fixa. Tente novamente.");
       console.error(err);
