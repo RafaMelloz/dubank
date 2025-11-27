@@ -148,6 +148,24 @@
       bg-white/5 dark:bg-gray-900/5;
   }
 
+  /* Input tipo date - corrige overflow no iOS */
+  .input[type="date"] {
+    @apply 
+      max-w-full;
+    
+    /* Força o texto a não quebrar e adiciona ellipsis se necessário */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Ajusta o seletor de data no iOS */
+  .input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   /* Select - mesmo estilo do input */
   .select {
     @apply 
